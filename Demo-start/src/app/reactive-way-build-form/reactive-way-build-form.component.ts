@@ -1,8 +1,8 @@
 import { Customer } from './../customers/customer';
 import { Component, OnInit, OnChanges } from '@angular/core';
-// import { NgForm } from '@angular/forms';
+// import { NgForm, Validator } from '@angular/forms';
 // import formgroup , form controller, formBuilder
-import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-reactive-way-build-form',
@@ -21,14 +21,24 @@ export class ReactiveWayBuildFormComponent implements OnInit {
 
   ngOnInit() {
 
-    // This FormBuilder is help us to simplyfy the code and make more readable help to do validation more
-    /* no need to add {firstName :new FormControl()} => keyword */
+    // This is FormBuilder with simplyfy the code and make validation with reactive Form Approach way
+    /* this is include form validator with formBuilder */
     this.customerReactiveFormApproach = this.fb.group({
-      firstName: '',
-      lastName : '',
-      emailId : '',
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName : ['', [Validators.required, Validators.maxLength(50)]],
+      emailId : ['', [Validators.required, Validators.email]],
       SendCatalog : true
     });
+
+    // This FormBuilder is help us to simplyfy the code and make more readable help to do validation more
+    /* no need to add {firstName :new FormControl()} => keyword */
+    /* This is without add validation in using form Builder */
+    // this.customerReactiveFormApproach = this.fb.group({
+    //   firstName: '',
+    //   lastName : '',
+    //   emailId : '',
+    //   SendCatalog : true
+    // });
 
     /* this is no need longer because we add formBuilder so it is doing this part of work well*/
     // this.customerReactiveFormApproach = new FormGroup({
