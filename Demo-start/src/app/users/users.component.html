@@ -1,0 +1,42 @@
+<form novalidate (ngSubmit)='save(loginForm)' #loginForm='ngForm'>
+  <label>Username</label>
+  <input class="form-control" name="username" [(ngModel)]='users.username' #username='ngModel'  
+   [ngClass]="{'is-invalid': (username.touched || username.dirty) && !username.valid }"  minlength="3" required/>
+  <span class="invalid-feedback">
+      <span *ngIf="username.errors?.required">
+        Please enter your username
+      </span>
+      <span *ngIf="username.errors?.minlength">
+        The first name must be longer than 3 characters.
+      </span>
+    </span>
+
+
+    <label>email</label>
+    <input class="form-control" type="email" name="email" [(ngModel)]=users.email #emailvar='ngModel'  email
+     [ngClass]="{'is-invalid': (emailvar.touched || emailvar.dirty) && !emailvar.valid }"   required/>
+    <span class="invalid-feedback">
+        <span *ngIf="emailvar.errors?.required">
+          Please enter your username
+        </span>
+        <span *ngIf="emailvar.errors?.email">
+          please enter correct valid email
+        </span>
+      </span>
+  
+
+
+
+
+    <button class="btn btn-primary " type="submit"
+      [title]="loginForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                  [disabled]="!loginForm.valid">
+            Save
+    </button>
+
+</form>
+
+<br>Dirty: {{ loginForm.dirty }}
+<br>Touched: {{ loginForm.touched }}
+<br>Valid: {{ loginForm.valid }}
+<br>Value: {{ loginForm.value | json }}
