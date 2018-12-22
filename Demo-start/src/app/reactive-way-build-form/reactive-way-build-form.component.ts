@@ -1,8 +1,8 @@
 import { Customer } from './../customers/customer';
 import { Component, OnInit, OnChanges } from '@angular/core';
-// import { NgForm, Validator } from '@angular/forms';
+// import { NgForm, Validator, FormControl } from '@angular/forms';
 // import formgroup , form controller, formBuilder
-import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormControl, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 
 @Component({
   selector: 'app-reactive-way-build-form',
@@ -19,6 +19,18 @@ export class ReactiveWayBuildFormComponent implements OnInit {
 
   constructor(public fb: FormBuilder) { }
 
+  emailMatcher(c: AbstractControl): { [key: string]: boolean } | null {
+    const emailControl = c.get('email');
+    const confirmControl = c.get('confirmEmail');
+    if (emailControl.pristine || confirmControl.pristine) {
+      return null;
+    }
+    if (emailControl.value === confirmControl.value) {
+      return null;
+    }
+    return { 'match': true };
+  }
+
   ngOnInit() {
 
     // This is FormBuilder with simplyfy the code and make validation with reactive Form Approach way
@@ -27,6 +39,8 @@ export class ReactiveWayBuildFormComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(3)]],
       lastName : ['', [Validators.required, Validators.maxLength(50)]],
       emailId : ['', [Validators.required, Validators.email]],
+      phone : '',
+      notification : '',
       SendCatalog : true
     });
 
@@ -47,6 +61,20 @@ export class ReactiveWayBuildFormComponent implements OnInit {
     //   emailId : new FormControl(),
     //   SendCatalog : new FormControl(true)
     // });
+  }
+
+
+  // runtime validator to check the text radio button is click phone no field is mandotory. when click
+  // when click email phone number field is optional
+  validateRadioButClick(incomeParam: string) {
+    const phoneControl = this.customerReactiveFormApproach.controls['phone'];
+    if (incomeParam ===  'text') {
+      phoneControl.setValidators([Validators.required]);
+    } else {
+      phoneControl.clearValidators();
+    }
+    phoneControl.updateValueAndValidity();
+
   }
 
   save() {
